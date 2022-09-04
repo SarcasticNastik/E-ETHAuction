@@ -1,25 +1,14 @@
-import { EthProvider } from "./contexts/EthContext";
-import Intro from "./components/Intro/";
-import Setup from "./components/Setup";
-import Demo from "./components/Demo";
-import Footer from "./components/Footer";
 import "./App.css";
 
 function App() {
   return (
-    <EthProvider>
-      <div id="App" >
-        <div className="container">
-          <Intro />
-          <hr />
-          <Setup />
-          <hr />
-          <Demo />
-          <hr />
-          <Footer />
-        </div>
+    <div id="App">
+      {/* Welcome to Auction */}
+      <div id="welcome">
+        <h1>Welcome to Auction</h1>
+        <h2>Place your bids</h2>
       </div>
-    </EthProvider>
+    </div>
   );
 }
 
