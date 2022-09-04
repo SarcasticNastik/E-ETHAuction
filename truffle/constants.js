@@ -1,0 +1,7 @@
+const SUPPLIERS = {VEDANTA: 1, MRF: 2, CEAT: 3}
+const MANUFACTURERS = {TATA: 1, MARUTI: 2}
+
+module.exports = {
+    SUPPLIERS,
+    MANUFACTURERS
+}
