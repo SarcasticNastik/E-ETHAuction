@@ -1,7 +1,7 @@
 const Market = artifacts.require("Market.sol");
 const LOG = true;
 
-const { SUPPLIERS, MANUFACTURERS } = require("../constants.js");
+const { SUPPLIERS, MANUFACTURERS } = require("./constants.js");
 
 contract("Market Test 1", (accounts) => {
   let initialBalance = web3.eth.getBalance(accounts[0]);
