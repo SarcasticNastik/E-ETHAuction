@@ -1,14 +1,25 @@
 // import libraries for web3
+import { useEffect, useState, createContext } from "react";
 import getWeb3 from "./getWeb3.js";
-import { useEffect, useState } from "react";
 import Market from "./contracts/Market.json";
+
+import PacmanLoader from "react-spinners/PacmanLoader";
+import Layout from "./pages/Layout.js";
+
+export const MarketContext = createContext();
 
 function App() {
   const [blockchain, setBlockchain] = useState({
     web3: null,
     accounts: null,
     contract: null,
-    curAccount: null,
+  });
+  const [curAccount, setCurAccount] = useState({
+    account: null,
+    balance: null,
+    isOwner: false,
+    isManufacturer: false,
+    isSupplier: false,
   });
 
   useEffect(() => {
@@ -25,15 +36,43 @@ function App() {
         Market.abi,
         deployedNetwork && deployedNetwork.address
       );
-      web3.eth.getBalance(curAccount).then((bal) => {
-        setBalance(bal);
-      });    
       setBlockchain({
         web3,
         accounts,
         contract: instance,
-        curAccount,
       });
+
+      // Check if owner
+      const isOwner = await instance.methods.isOwner().call({
+        from: curAccount,
+      });
+
+      // check if manufacturer
+      const manufacturerNumber = await instance.methods
+        .getManufacturerNumber()
+        .call({
+          from: curAccount,
+        });
+
+      // Check if supplier
+      const supplierNumber = await instance.methods.getSupplierNumber().call({
+        from: curAccount,
+      });
+
+      console.log("manufacturerNumber", manufacturerNumber);
+      console.log("supplierNumber", supplierNumber);
+      console.log("isOwner", isOwner);
+
+      setCurAccount({
+        account: curAccount,
+        balance: await web3.eth.getBalance(curAccount),
+        isOwner,
+        isManufacturer: manufacturerNumber > 0,
+        isSupplier: supplierNumber > 0,
+        manufacturerNumber: manufacturerNumber,
+        supplierNumber: supplierNumber,
+      });
+
       console.log(
         "web3",
         web3,
@@ -44,35 +83,52 @@ function App() {
         "curAccount",
         curAccount
       );
+      setLoading(false);
     };
     init();
   }, []);
-  const [balance, setBalance] = useState(0);
+  const [loading, setLoading] = useState(true);
+
   window.ethereum.on("accountsChanged", function (accounts) {
     // Time to reload your interface with accounts[0]!
-    setBlockchain({
-      ...blockchain,
-      curAccount: accounts[0],
-    });
-    blockchain.web3.eth.getBalance(blockchain.curAccount).then((bal) => {
-      setBalance(bal);
-    });  
     window.location.reload();
   });
+
+  // Check if balance has changed
+
+  const Loader = () => (
+    <PacmanLoader
+      color={"#36d7b7"}
+      loading={loading || blockchain.web3 === null}
+      size={100}
+    />
+  );
   return (
     <div className="App">
-      <h1>Market</h1>
-      {blockchain.web3 === null ? (
-        <div>Loading Web3, accounts, and contract...</div>
-      ) : (
-        <div>
-          <div>Current Account: {blockchain.curAccount}</div>
-          <div>
-            Balance: {balance}
-
+      <MarketContext.Provider
+        value={{
+          blockchain,
+          setBlockchain,
+          curAccount,
+          setCurAccount,
+        }}
+      >
+        {blockchain.web3 === null ? (
+          <div
+            style={{
+              height: "90vh",
+              width: "85%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Loader />
           </div>
-        </div>
-      )}
+        ) : (
+          <Layout />
+        )}
+      </MarketContext.Provider>
     </div>
   );
 }

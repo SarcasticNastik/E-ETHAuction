@@ -269,6 +269,13 @@ contract Market {
     }
 
     /**
+    @notice Check if owner
+     */
+    function isOwner() public view returns (bool) {
+        return msg.sender == escrow;
+    }
+
+    /**
     @notice manufacturer number for the message sender (if any)
      */
     function getManufacturerNumber() public view returns (uint256) {
@@ -276,7 +283,7 @@ contract Market {
         if (manufacturerOwnersAddress[msg.sender] != 0) {
             return manufacturerOwnersAddress[msg.sender];
         } else {
-            return uint256(MANUFACTURERS.MARUTI) + 1;
+            return uint256(MANUFACTURERS.NULL);
         }
     }
 
@@ -288,7 +295,7 @@ contract Market {
         if (supplierOwnersAddress[msg.sender] != 0) {
             return supplierOwnersAddress[msg.sender];
         } else {
-            return uint256(SUPPLIERS.CEAT) + 1;
+            return uint256(SUPPLIERS.NULL);
         }
     }
 
