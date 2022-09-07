@@ -146,6 +146,7 @@ export default function Bid() {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             label="Supplier"
+            defaultValue={SUPPLIERS.VEDANTA}
           >
             <MenuItem value={SUPPLIERS.VEDANTA}>VEDANTA</MenuItem>
             <MenuItem value={SUPPLIERS.MRF}>MRF</MenuItem>
@@ -160,13 +161,30 @@ export default function Bid() {
           <InputLabel htmlFor="component-simple">Price</InputLabel>
           <Input id="component-simple" />
         </FormControl>
-        <Button
-          variant="contained"
-          style={{ marginTop: "1rem" }}
-          onClick={() => {}}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "2rem",
+          }}
         >
-          Bid
-        </Button>
+          <Button
+            variant="contained"
+            style={{ marginTop: "1rem" }}
+            onClick={() => {}}
+          >
+            Secret Bid
+          </Button>
+          <Button
+            variant="contained"
+            style={{ marginTop: "1rem", marginLeft: "10px" }}
+            onClick={() => {}}
+          >
+            Bid
+          </Button>
+        </div>
       </div>
     </div>
   );
