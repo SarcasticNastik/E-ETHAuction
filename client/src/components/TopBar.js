@@ -4,22 +4,70 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { MANUFACTURERS_NAME, SUPPLIERS_NAME } from "../constants";
-
 // import Button from "@mui/material/Button";
 // import IconButton from "@mui/material/IconButton";
 // import MenuIcon from "@mui/icons-material/Menu";
 
 import { MarketContext } from "../App";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function ButtonAppBar() {
   const { blockchain, curAccount } = useContext(MarketContext);
+  const navigate = useNavigate();
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar style={{ background: "#2E3B55" }} position="static">
-        <Toolbar>
-          <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+        <Toolbar sx={{ alignItems: "center" }}>
+          <Typography variant="h4" component="div">
             MarketAuction
           </Typography>
+          {/* Add three items Home, Market, Bid*/}
+          {/* Home should navigate to / */}
+          {/* Market should navigate to /market */}
+          {/* Bid should navigate to /bid */}
+          <div
+            style={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingTop: "5px",
+              marginLeft: "0px",
+            }}
+          >
+            <Button
+              onClick={() => {
+                navigate("/");
+              }}
+              color="inherit"
+              sx={{ fontSize: "13px" }}
+            >
+              Home
+            </Button>
+            {curAccount.isSupplier ? (
+              <Button
+                onClick={() => {
+                  navigate("/market");
+                }}
+                color="inherit"
+                sx={{ fontSize: "13px" }}
+              >
+                Market
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  navigate("/bid");
+                }}
+                color="inherit"
+                sx={{ fontSize: "13px" }}
+              >
+                Bid
+              </Button>
+            )}
+          </div>
           {blockchain.web3 === null ? (
             ""
           ) : (

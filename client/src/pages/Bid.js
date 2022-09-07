@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { useContext, useState } from "react";
 import { MarketContext } from "../App";
-import { SUPPLIERS } from "../constants";
+import { MANUFACTURERS, SUPPLIERS } from "../constants";
 
 export default function Bid() {
   // A table with two rows and 3 columns
@@ -24,10 +24,11 @@ export default function Bid() {
   // Each row in second column has Buttons to get the supply data and bid
   // Headers are SUPPLIER_NAME.VEDANTA, SUPPLIER_NAME.MRF, SUPPLIER_NAME.CEAT
 
-  const { blockchain } = useContext(MarketContext);
+  const { blockchain, curAccount } = useContext(MarketContext);
   const [vSupply, setVSupply] = useState(null);
   const [mSupply, setMSupply] = useState(null);
   const [cSupply, setCSupply] = useState(null);
+  console.log(curAccount);
   return (
     <div>
       <TableContainer component={Paper}>
@@ -35,8 +36,11 @@ export default function Bid() {
           <TableHead>
             <TableRow>
               <TableCell>VEDANTA</TableCell>
-              <TableCell>MRF</TableCell>
-              <TableCell>CEAT</TableCell>
+              {curAccount.manufacturerNumber === MANUFACTURERS.TATA ? (
+                <TableCell>MRF</TableCell>
+              ) : (
+                <TableCell>CEAT</TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -53,26 +57,29 @@ export default function Bid() {
                   </Typography>
                 )}
               </TableCell>
-              <TableCell component="th" scope="row">
-                {mSupply === null ? (
-                  <Typography>Click to get supply</Typography>
-                ) : (
-                  <Typography variant="h6" component="div" gutterBottom>
-                    Current Supply: {mSupply[0]} <br />
-                    Current Price: {mSupply[1]}
-                  </Typography>
-                )}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {cSupply === null ? (
-                  <Typography>Click to get supply</Typography>
-                ) : (
-                  <Typography variant="h6" component="div" gutterBottom>
-                    Current Supply: {cSupply[0]} <br />
-                    Current Price: {cSupply[1]}
-                  </Typography>
-                )}
-              </TableCell>
+              {curAccount.manufacturerNumber === MANUFACTURERS.TATA ? (
+                <TableCell component="th" scope="row">
+                  {mSupply === null ? (
+                    <Typography>Click to get supply</Typography>
+                  ) : (
+                    <Typography variant="h6" component="div" gutterBottom>
+                      Current Supply: {mSupply[0]} <br />
+                      Current Price: {mSupply[1]}
+                    </Typography>
+                  )}
+                </TableCell>
+              ) : (
+                <TableCell component="th" scope="row">
+                  {cSupply === null ? (
+                    <Typography>Click to get supply</Typography>
+                  ) : (
+                    <Typography variant="h6" component="div" gutterBottom>
+                      Current Supply: {cSupply[0]} <br />
+                      Current Price: {cSupply[1]}
+                    </Typography>
+                  )}
+                </TableCell>
+              )}
             </TableRow>
             <TableRow
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -92,36 +99,39 @@ export default function Bid() {
                   Get Supply
                 </Button>
               </TableCell>
-              <TableCell component="th" scope="row">
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    blockchain.contract.methods
-                      .getSupply(SUPPLIERS.MRF)
-                      .call()
-                      .then((supply) => {
-                        setMSupply(supply);
-                      });
-                  }}
-                >
-                  Get Supply
-                </Button>
-              </TableCell>
-              <TableCell component="th" scope="row">
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    blockchain.contract.methods
-                      .getSupply(SUPPLIERS.CEAT)
-                      .call()
-                      .then((supply) => {
-                        setCSupply(supply);
-                      });
-                  }}
-                >
-                  Get Supply
-                </Button>
-              </TableCell>
+              {curAccount.manufacturerNumber === MANUFACTURERS.TATA ? (
+                <TableCell component="th" scope="row">
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      blockchain.contract.methods
+                        .getSupply(SUPPLIERS.MRF)
+                        .call()
+                        .then((supply) => {
+                          setMSupply(supply);
+                        });
+                    }}
+                  >
+                    Get Supply
+                  </Button>
+                </TableCell>
+              ) : (
+                <TableCell component="th" scope="row">
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      blockchain.contract.methods
+                        .getSupply(SUPPLIERS.CEAT)
+                        .call()
+                        .then((supply) => {
+                          setCSupply(supply);
+                        });
+                    }}
+                  >
+                    Get Supply
+                  </Button>
+                </TableCell>
+              )}
             </TableRow>
           </TableBody>
         </Table>
@@ -149,8 +159,11 @@ export default function Bid() {
             defaultValue={SUPPLIERS.VEDANTA}
           >
             <MenuItem value={SUPPLIERS.VEDANTA}>VEDANTA</MenuItem>
-            <MenuItem value={SUPPLIERS.MRF}>MRF</MenuItem>
-            <MenuItem value={SUPPLIERS.CEAT}>CEAT</MenuItem>
+            {curAccount.manufacturerNumber === MANUFACTURERS.TATA ? (
+              <MenuItem value={SUPPLIERS.MRF}>MRF</MenuItem>
+            ) : (
+              <MenuItem value={SUPPLIERS.CEAT}>CEAT</MenuItem>
+            )}
           </Select>
         </FormControl>
         <FormControl sx={{ m: 1, minWidth: 120 }}>

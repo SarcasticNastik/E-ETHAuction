@@ -1,11 +1,26 @@
-import { useContext } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useContext, useState } from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import TopBar from "../components/TopBar";
 
 import Assign from "../pages/Assign";
 import Bid from "./Bid";
 import SupplierMarket from "./SupplierMarket";
 import { MarketContext } from "../App";
+
+const NotFound = () => {
+  const [redirect, setRedirect] = useState(5);
+  const navigate = useNavigate();
+  setTimeout(() => {
+    if (redirect === 1) navigate("/");
+    setRedirect(redirect - 1);
+  }, 1000);
+  return (
+    <div>
+      <h1>404: Not Found</h1>
+      <h2>Redirecting in {redirect}</h2>
+    </div>
+  );
+};
 
 const Layout = () => {
   const Home = () => <h1>Your address: {curAccount.account}</h1>;
@@ -27,7 +42,8 @@ const Layout = () => {
         {curAccount.isManufacturer && <Route path="/bid" element={<Bid />} />}
         {curAccount.isOwner && <Route path="/auction" element={<Auction />} />}
         {/* Default redirect */}
-        <Route path="*" element={<h1>404: Not Found</h1>} />
+        {/* Add timeout */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

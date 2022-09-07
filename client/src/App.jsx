@@ -52,16 +52,18 @@ function App() {
       });
 
       // check if manufacturer
-      const manufacturerNumber = await instance.methods
-        .getManufacturerNumber()
-        .call({
+      const manufacturerNumber = parseInt(
+        await instance.methods.getManufacturerNumber().call({
           from: curAccount,
-        });
+        })
+      );
 
       // Check if supplier
-      const supplierNumber = await instance.methods.getSupplierNumber().call({
-        from: curAccount,
-      });
+      const supplierNumber = parseInt(
+        await instance.methods.getSupplierNumber().call({
+          from: curAccount,
+        })
+      );
 
       console.log("manufacturerNumber", manufacturerNumber);
       console.log("supplierNumber", supplierNumber);
