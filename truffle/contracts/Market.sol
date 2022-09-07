@@ -86,6 +86,7 @@ contract Market {
     This enum tracks the auction status
      */
     enum AUCTION_STATUS {
+        NOT_STARTED,
         PENDING_BID,
         PENDING_VERIFICATION,
         CAN_START,
@@ -135,7 +136,7 @@ contract Market {
         currentBids[MANUFACTURERS.MARUTI][SUPPLIERS.CEAT] = [-1, -1];
 
         // Initialize auction status
-        auctionStatus = AUCTION_STATUS.PENDING_BID;
+        auctionStatus = AUCTION_STATUS.NOT_STARTED;
 
         // Initialize global_seed to 0
         global_seed = 0;
@@ -406,6 +407,14 @@ contract Market {
             manufacturers[MANUFACTURERS(getManufacturerNumber())].numBodies,
             manufacturers[MANUFACTURERS(getManufacturerNumber())].numWheels
         ];
+    }
+
+    /**
+    @notice Getter function for getting auction status
+    @return Auction status 
+    */
+    function getAuctionStatus() public view returns (AUCTION_STATUS) {
+        return auctionStatus;
     }
 
     /**
