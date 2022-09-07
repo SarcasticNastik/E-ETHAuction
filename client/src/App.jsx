@@ -34,7 +34,11 @@ function App() {
       const deployedNetwork = Market.networks[networkId];
       const instance = new web3.eth.Contract(
         Market.abi,
-        deployedNetwork && deployedNetwork.address
+        deployedNetwork && deployedNetwork.address,
+        {
+          from: curAccount,
+          gasPrice: "20000000000",
+        }
       );
       setBlockchain({
         web3,

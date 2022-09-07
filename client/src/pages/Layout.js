@@ -3,13 +3,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TopBar from "../components/TopBar";
 
 import Assign from "../pages/Assign";
-
+import Bid from "./Bid";
+import SupplierMarket from "./SupplierMarket";
 import { MarketContext } from "../App";
 
 const Layout = () => {
   const Home = () => <h1>Your address: {curAccount.account}</h1>;
-  const Market = () => <h1>Market</h1>;
-  const Bid = () => <h1>Bid</h1>;
   const Auction = () => <h1>Auction</h1>;
 
   const { curAccount } = useContext(MarketContext);
@@ -22,7 +21,9 @@ const Layout = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         {!assigned && <Route exact path="/assign" element={<Assign />} />}
-        {assigned && <Route path="/market" element={<Market />} />}
+        {curAccount.isSupplier && (
+          <Route path="/market" element={<SupplierMarket />} />
+        )}
         {curAccount.isManufacturer && <Route path="/bid" element={<Bid />} />}
         {curAccount.isOwner && <Route path="/auction" element={<Auction />} />}
         {/* Default redirect */}
