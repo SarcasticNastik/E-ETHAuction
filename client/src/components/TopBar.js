@@ -37,16 +37,30 @@ export default function ButtonAppBar() {
               marginLeft: "0px",
             }}
           >
-            <Button
-              onClick={() => {
-                navigate("/");
-              }}
-              color="inherit"
-              sx={{ fontSize: "13px" }}
-            >
-              Home
-            </Button>
-            {curAccount.isSupplier ? (
+            {!curAccount.isOwner &&
+            !curAccount.isManufacturer &&
+            !curAccount.isSupplier ? (
+              <Button
+                onClick={() => {
+                  navigate("/Assign");
+                }}
+                color="inherit"
+                sx={{ fontSize: "13px" }}
+              >
+                Assign
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  navigate("/");
+                }}
+                color="inherit"
+                sx={{ fontSize: "13px" }}
+              >
+                Home
+              </Button>
+            )}
+            {curAccount.isSupplier && (
               <Button
                 onClick={() => {
                   navigate("/market");
@@ -56,7 +70,8 @@ export default function ButtonAppBar() {
               >
                 Market
               </Button>
-            ) : (
+            )}
+            {curAccount.isManufacturer && (
               <Button
                 onClick={() => {
                   navigate("/bid");
@@ -65,6 +80,17 @@ export default function ButtonAppBar() {
                 sx={{ fontSize: "13px" }}
               >
                 Bid
+              </Button>
+            )}
+            {curAccount.isOwner && (
+              <Button
+                onClick={() => {
+                  navigate("/auction");
+                }}
+                color="inherit"
+                sx={{ fontSize: "13px" }}
+              >
+                Auction
               </Button>
             )}
           </div>

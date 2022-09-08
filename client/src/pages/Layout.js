@@ -2,9 +2,11 @@ import { useContext, useState } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import TopBar from "../components/TopBar";
 
-import Assign from "../pages/Assign";
+import Assign from "./Assign";
 import Bid from "./Bid";
+import Home from "./Home";
 import SupplierMarket from "./SupplierMarket";
+
 import { MarketContext } from "../App";
 
 const NotFound = () => {
@@ -23,7 +25,6 @@ const NotFound = () => {
 };
 
 const Layout = () => {
-  const Home = () => <h1>Your address: {curAccount.account}</h1>;
   const Auction = () => <h1>Auction</h1>;
 
   const { curAccount } = useContext(MarketContext);

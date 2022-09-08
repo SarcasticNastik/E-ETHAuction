@@ -103,11 +103,20 @@ function App() {
   // Check if balance has changed
 
   const Loader = () => (
-    <PacmanLoader
-      color={"#36d7b7"}
-      loading={loading || blockchain.web3 === null}
-      size={100}
-    />
+    <div className="loader">
+      <PacmanLoader
+        color={"#36d7b7"}
+        loading={loading || blockchain.web3 === null}
+        size={100}
+      />
+      <h1
+        style={{
+          paddingTop: "150px",
+        }}
+      >
+        Connecting to web3....
+      </h1>
+    </div>
   );
   return (
     <div className="App">
