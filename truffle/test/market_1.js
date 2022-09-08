@@ -1,7 +1,7 @@
 const Market = artifacts.require("Market.sol");
 const LOG = true;
 
-const { SUPPLIERS, MANUFACTURERS } = require("./constants.js");
+const { SUPPLIERS, MANUFACTURERS, AUCTION_STATUS } = require("./constants.js");
 
 contract("Market Test 1", (accounts) => {
   let initialBalance = web3.eth.getBalance(accounts[0]);
@@ -46,6 +46,14 @@ contract("Market Test 1", (accounts) => {
     assert.equal(supply[1].words[0], 100);
   })
 
+  // Should change auction status to PENDING_BID
+  it("should start the auction", async () => {
+    let market = await Market.deployed();
+    await market.changeAuctionStatus(AUCTION_STATUS.PENDING_BID);
+    // let auctionStatus = await market.getAuctionStatus().call();
+    // assert.equal(auctionStatus, AUCTION_STATUS.PENDING_BID);
+  });
+
   // Should do a secret bid
   it("should secret bid in auction", async () => {
     let market = await Market.deployed();
@@ -54,7 +62,8 @@ contract("Market Test 1", (accounts) => {
 
     await market.secretBid(SUPPLIERS.VEDANTA, await market.generateBidHash.call(SUPPLIERS.VEDANTA, 20, 200, { from: accounts[5] }), { from: accounts[5] });
     await market.secretBid(SUPPLIERS.CEAT, await market.generateBidHash.call(SUPPLIERS.CEAT, 10, 200, { from: accounts[5] }), { from: accounts[5] });
-    await market.secretBidDone();
+    await market.changeAuctionStatus(AUCTION_STATUS.PENDING_VERIFICATION);
+
   });
 
   it("should bid auction", async () => {
@@ -77,7 +86,9 @@ contract("Market Test 1", (accounts) => {
     let balance = await market.getEscrowBalance();
 
     assert.equal(balance.words[0], initialBalance.words[0] + 8000);
-    await market.revealBid();
+    await market.changeAuctionStatus(AUCTION_STATUS.CAN_START);
+    // let auctionStatus = await market.getAuctionStatus().call();
+    // assert.equal(auctionStatus, AUCTION_STATUS.CAN_START);
   });
 
   it("should start auction", async () => {
@@ -86,6 +97,7 @@ contract("Market Test 1", (accounts) => {
     // Total amount of transactions that will be happening
     await market.auction({from:accounts[0], value: 8000});
 
+    await market.changeAuctionStatus(AUCTION_STATUS.NOT_STARTED);
     // Log all events
   })
 

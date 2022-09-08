@@ -1,7 +1,8 @@
 const Market = artifacts.require("Market.sol");
 const LOG = true;
 
-const { SUPPLIERS, MANUFACTURERS } = require("./constants.js");
+const { SUPPLIERS, MANUFACTURERS, AUCTION_STATUS } = require("./constants.js");
+
 contract("Market Test 3", (accounts) => {
   let initialBalance = web3.eth.getBalance(accounts[0]);
   let initialBalanceSuppliers = {};
@@ -48,6 +49,14 @@ contract("Market Test 3", (accounts) => {
     assert.equal(supply[1].words[0], 100);
   });
 
+  // Should change auction status to PENDING_BID
+  it("should start the auction", async () => {
+    let market = await Market.deployed();
+    await market.changeAuctionStatus(AUCTION_STATUS.PENDING_BID);
+    // let auctionStatus = await market.getAuctionStatus().call();
+    // assert.equal(auctionStatus, AUCTION_STATUS.PENDING_BID);
+  });
+
   // Should do a secret bid
   it("should secret bid in auction", async () => {
     let market = await Market.deployed();
@@ -56,7 +65,7 @@ contract("Market Test 3", (accounts) => {
 
     await market.secretBid(SUPPLIERS.VEDANTA, await market.generateBidHash.call(SUPPLIERS.VEDANTA, 7, 100, { from: accounts[5] }), { from: accounts[5] });
     await market.secretBid(SUPPLIERS.CEAT, await market.generateBidHash.call(SUPPLIERS.CEAT, 7, 100, { from: accounts[5] }), { from: accounts[5] });
-    await market.secretBidDone();
+    await market.changeAuctionStatus(AUCTION_STATUS.PENDING_VERIFICATION);
   });
   
   it("should bid auction", async () => {
@@ -77,10 +86,10 @@ contract("Market Test 3", (accounts) => {
       from: accounts[5],
       value: 700,
     });
-    let balance = await market.getEscrowBalance();
+    // let balance = await market.getEscrowBalance();
 
-    assert.equal(balance.words[0], initialBalance.words[0] + 4000);
-    await market.revealBid();
+    // assert.equal(balance.words[0], initialBalance.words[0] + 4000);
+    await market.changeAuctionStatus(AUCTION_STATUS.CAN_START);
   });
 
   it("should start auction", async () => {
@@ -107,6 +116,7 @@ contract("Market Test 3", (accounts) => {
 
     // CEAT should have 700 more
     // assert.equal(parseInt(initialBalanceSuppliers[3]) + 700, await web3.eth.getBalance(accounts[3]));
+    await market.changeAuctionStatus(AUCTION_STATUS.NOT_STARTED);
 })
 
   // Log all events

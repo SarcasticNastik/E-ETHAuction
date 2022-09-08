@@ -413,8 +413,8 @@ contract Market {
     @notice Getter function for getting auction status
     @return Auction status 
     */
-    function getAuctionStatus() public view returns (AUCTION_STATUS) {
-        return auctionStatus;
+    function getAuctionStatus() public view returns (uint) {
+        return uint(auctionStatus);
     }
 
     /**
@@ -495,10 +495,16 @@ contract Market {
     /**
     @notice Changes `auction_status` to reveal bid
      */
-    function secretBidDone() public {
+    // function secretBidDone() public {
+    //     require(msg.sender == escrow);
+    //     require(auctionStatus == AUCTION_STATUS.PENDING_BID);
+    //     auctionStatus = AUCTION_STATUS.PENDING_VERIFICATION;
+    // }
+
+    function changeAuctionStatus(uint _auctionStatus) public {
         require(msg.sender == escrow);
-        require(auctionStatus == AUCTION_STATUS.PENDING_BID);
-        auctionStatus = AUCTION_STATUS.PENDING_VERIFICATION;
+        // require(uint(auctionStatus) == _auctionStatus - 1);
+        auctionStatus = AUCTION_STATUS(_auctionStatus);
     }
 
     /**
@@ -567,11 +573,11 @@ contract Market {
     /**
     @notice Change `auction_state` after revealing bids
      */
-    function revealBid() public {
-        require(msg.sender == escrow);
-        require(auctionStatus == AUCTION_STATUS.PENDING_VERIFICATION);
-        auctionStatus = AUCTION_STATUS.CAN_START;
-    }
+    // function revealBid() public {
+    //     require(msg.sender == escrow);
+    //     require(auctionStatus == AUCTION_STATUS.PENDING_VERIFICATION);
+    //     auctionStatus = AUCTION_STATUS.CAN_START;
+    // }
 
     /**
     @return Escrow Balance
@@ -962,6 +968,6 @@ contract Market {
         currentBids[MANUFACTURERS.MARUTI][SUPPLIERS.VEDANTA] = [-1, -1];
         currentBids[MANUFACTURERS.MARUTI][SUPPLIERS.CEAT] = [-1, -1];
 
-        auctionStatus = AUCTION_STATUS.PENDING_BID;
+        auctionStatus = AUCTION_STATUS.NOT_STARTED;
     }
 }
