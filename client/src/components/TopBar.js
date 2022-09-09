@@ -82,17 +82,16 @@ export default function ButtonAppBar() {
                 Bid
               </Button>
             )}
-            {curAccount.isOwner && (
-              <Button
-                onClick={() => {
-                  navigate("/auction");
-                }}
-                color="inherit"
-                sx={{ fontSize: "13px" }}
-              >
-                Auction
-              </Button>
-            )}
+
+            <Button
+              onClick={() => {
+                navigate("/buycar");
+              }}
+              color="inherit"
+              sx={{ fontSize: "13px" }}
+            >
+              BuyCar
+            </Button>
           </div>
           {blockchain.web3 === null ? (
             ""

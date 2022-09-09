@@ -25,7 +25,7 @@ const NotFound = () => {
 };
 
 const Layout = () => {
-  const Auction = () => <h1>Auction</h1>;
+  const BuyCar = () => <h1>Page Under Construction</h1>;
 
   const { curAccount } = useContext(MarketContext);
   const assigned =
@@ -41,7 +41,7 @@ const Layout = () => {
           <Route path="/market" element={<SupplierMarket />} />
         )}
         {curAccount.isManufacturer && <Route path="/bid" element={<Bid />} />}
-        {curAccount.isOwner && <Route path="/auction" element={<Auction />} />}
+        <Route path="/buycar" element={<BuyCar />} />
         {/* Default redirect */}
         {/* Add timeout */}
         <Route path="*" element={<NotFound />} />
