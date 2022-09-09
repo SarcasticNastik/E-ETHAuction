@@ -413,8 +413,8 @@ contract Market {
     @notice Getter function for getting auction status
     @return Auction status 
     */
-    function getAuctionStatus() public view returns (uint) {
-        return uint(auctionStatus);
+    function getAuctionStatus() public view returns (uint256) {
+        return uint256(auctionStatus);
     }
 
     /**
@@ -462,6 +462,34 @@ contract Market {
     }
 
     /**
+    @notice Getter function to return Hashed bids
+    @param _manufacturer Manufacturer
+    @param _supplier Supplier
+    @return Hashed bids
+     */
+    function getHashedBids(MANUFACTURERS _manufacturer, SUPPLIERS _supplier)
+        public
+        view
+        returns (bytes32)
+    {
+        return hashedBids[_manufacturer][_supplier];
+    }
+
+    /**
+    @notice Getter function to return Revealed bids
+    @param _manufacturer Manufacturer
+    @param _supplier Supplier
+    @return Revealed bids
+     */
+    function getBids(MANUFACTURERS _manufacturer, SUPPLIERS _supplier)
+        public
+        view
+        returns (int[2] memory)
+    {
+        return currentBids[_manufacturer][_supplier];
+    }
+
+    /**
     @notice Getter function to return cars for the message sender 
      */
     function getMyCars() public view returns (Car[] memory) {
@@ -501,7 +529,7 @@ contract Market {
     //     auctionStatus = AUCTION_STATUS.PENDING_VERIFICATION;
     // }
 
-    function changeAuctionStatus(uint _auctionStatus) public {
+    function changeAuctionStatus(uint256 _auctionStatus) public {
         require(msg.sender == escrow);
         // require(uint(auctionStatus) == _auctionStatus - 1);
         auctionStatus = AUCTION_STATUS(_auctionStatus);
