@@ -92,7 +92,8 @@ function App() {
       setLoading(false);
     };
     init();
-  }, []);
+  }, [curAccount]);
+
   const [loading, setLoading] = useState(true);
 
   window.ethereum.on("accountsChanged", function (accounts) {

@@ -12,7 +12,26 @@ import {
 import Swal from "sweetalert2";
 import { MarketContext } from "../App";
 import { MANUFACTURERS, SUPPLIERS } from "../constants";
+import { useNavigate } from "react-router-dom";
 export default function Home() {
+  const navigate = useNavigate();
+  const { blockchain, curAccount } = useContext(MarketContext);
+  const [auctionStatus, setAuctionStatus] = useState(0);
+
+  const GeneralHome = () => {
+    const [redirect, setRedirect] = useState(5);
+    setTimeout(() => {
+      if (redirect === 1) navigate("/assign");
+      setRedirect(redirect - 1);
+    }, 1000);
+    return (
+      <div>
+        <h1>Please Assign Yourself</h1>
+        <h2>Redirecting in {redirect}</h2>
+      </div>
+    );
+  };
+
   const SupplierHome = () => {
     return (
       <div>
@@ -326,14 +345,14 @@ export default function Home() {
     );
   };
 
-  const { blockchain, curAccount } = useContext(MarketContext);
-  const [auctionStatus, setAuctionStatus] = useState(0);
-
   return (
     <div>
       {curAccount.isSupplier && <SupplierHome />}
       {curAccount.isManufacturer && <ManufacturerHome />}
       {curAccount.isOwner && <OwnerHome />}
+      {!curAccount.isOwner &&
+        !curAccount.isManufacturer &&
+        !curAccount.isSupplier && <GeneralHome />}
     </div>
   );
 }

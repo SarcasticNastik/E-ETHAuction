@@ -4,7 +4,6 @@ import { useContext } from "react";
 
 import { MANUFACTURERS, SUPPLIERS } from "../constants";
 import { MarketContext } from "../App";
-import { useNavigate } from "react-router-dom";
 // import { Grid } from "@mui/material";
 
 export default function Assign() {
@@ -15,7 +14,6 @@ export default function Assign() {
   // TATA and MARUTI are manufacturer
   // VEDANTA, MRF, CEAT are suppliers
   const { blockchain, curAccount } = useContext(MarketContext);
-  const navigate = useNavigate();
   const assign = async (num, type) => {
     let a = "";
     if (type === 0)
@@ -27,7 +25,7 @@ export default function Assign() {
         .assignSupplier(num)
         .send({ from: curAccount.account });
     console.log(a);
-    navigate(type === 0 ? "/bid" : "/market");
+    window.location = type === 0 ? "/bid" : "/market";
   };
   return (
     <div
