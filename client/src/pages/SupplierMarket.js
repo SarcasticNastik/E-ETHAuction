@@ -1,5 +1,4 @@
-import { Button, Paper, TextField, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Button, TextField, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 import { MarketContext } from "../App";
 
@@ -10,32 +9,49 @@ export default function SupplierMarket() {
   const [supply, setSupply] = useState(null);
 
   return (
-    <div>
-      <Box
-        component="form"
-        sx={{
-          "& > :not(style)": { m: 1, width: "25ch" },
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "20px",
+        boxSizing: "border-box",
+      }}
+    >
+      <div
+        style={{
+          padding: "10px",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: "10px",
         }}
-        noValidate
-        autoComplete="off"
       >
-        <TextField
-          id="qty"
-          label="Quantity"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          id="cost"
-          label="Cost for one"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-      </Box>
+        <div style={{ fontSize: "20px", margin: "10px" }}>
+          {/* <h4></h4> */}
+          <TextField
+            id="qty"
+            label="Quantity"
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </div>
+        <div style={{ fontSize: "20px", margin: "10px" }}>
+          <TextField
+            id="cost"
+            label="Cost for one"
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </div>
+      </div>
+
       <Button
         sx={{
           "& > :not(style)": { m: 1, width: "25ch" },
@@ -53,21 +69,42 @@ export default function SupplierMarket() {
       >
         Update Supply
       </Button>
-
       {/* Add a Paper with a button getSupply */}
-      <Paper sx={{ p: 2 }}>
-        {supply === null ? (
-          <Typography variant="h5" component="div">
-            Please click to get current supply
-          </Typography>
-        ) : (
-          <Typography variant="h5" component="div">
-            Current Supply: {supply[0]}
-            <br />
-            Current Price: {supply[1]}
-          </Typography>
-        )}
+      <div
+        style={{
+          borderRadius: "5px",
+          width: "500px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: "30px",
+          padding: "40px 25px ",
+          boxShadow: "0 0 3px 0 rgba(0,0,0,0.5)",
+        }}
+      >
+        <div
+          style={{
+            fontSize: "20px",
+            marginBottom: "10px",
+            alignContent: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Typography variant="h4">Current Supply</Typography>
 
+          {supply === null ? (
+            <Typography variant="h5" component="div">
+              Please click to get current supply
+            </Typography>
+          ) : (
+            <Typography variant="h5" component="div">
+              Current Supply: {supply[0]}
+              <br />
+              Current Price: {supply[1]}
+            </Typography>
+          )}
+        </div>
         <Button
           variant="contained"
           onClick={async () => {
@@ -82,7 +119,7 @@ export default function SupplierMarket() {
         >
           Get Supply
         </Button>
-      </Paper>
+      </div>
     </div>
   );
 }
