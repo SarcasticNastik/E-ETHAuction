@@ -9,7 +9,7 @@ import {
 } from "../constants";
 
 export default function BuyCar() {
-  const { blockchain } = useContext(MarketContext);
+  const { blockchain, curAccount } = useContext(MarketContext);
   const [tataCars, setTataCars] = useState(0);
   const [tataCarPrice, setTataCarPrice] = useState(0);
   const [marutiCars, setMarutiCars] = useState(0);
@@ -189,6 +189,11 @@ export default function BuyCar() {
                 // Show car details in pop up
                 console.log(car);
                 Swal.fire({
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#3085d6",
+                  confirmButtonText: "Verify",
+                  cancelButtonText: "Close",
                   title: "Car Details",
                   html: `<p>Manufacturer: ${
                     MANUFACTURERS_NAME[parseInt(car[0])]
@@ -200,6 +205,26 @@ export default function BuyCar() {
                       SUPPLIERS_NAME[parseInt(car[3][0])]
                     } - ${car[3][2]}</p>
                     <p>id: ${car[4]}</p>`,
+                }).then(async (res) => {
+                  if (res.isConfirmed) {
+                    // Verify product
+                    let result = await blockchain.contract.methods
+                      .verifyCar(car.id)
+                      .send({ from: curAccount.address });
+                    if (result) {
+                      Swal.fire({
+                        title: "Success",
+                        text: "Product verified",
+                        icon: "success",
+                      });
+                    } else {
+                      Swal.fire({
+                        title: "Error",
+                        text: "Product verification failed",
+                        icon: "error",
+                      });
+                    }
+                  }
                 });
               }}
             >
