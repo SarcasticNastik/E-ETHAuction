@@ -9,6 +9,9 @@ export default function Supplies() {
   const [supplies, setSupplies] = useState([0, 0, 0]);
   const [myCars, setMyCars] = useState([]);
 
+  const [wheels, setWheels] = useState([]);
+  const [bodies, setBodies] = useState([]);
+
   const init = useCallback(async () => {
     let res = await blockchain.contract.methods.getManufacturerSupply().call();
     setSupplies(res);
@@ -17,6 +20,16 @@ export default function Supplies() {
       .getManufacturerCars(curAccount.manufacturerNumber)
       .call();
     setMyCars(cars);
+
+    let wheels = await blockchain.contract.methods
+      .getManufacturerWheels(curAccount.manufacturerNumber)
+      .call();
+    setWheels(wheels);
+
+    let bodies = await blockchain.contract.methods
+      .getManufacturerBodies(curAccount.manufacturerNumber)
+      .call();
+    setBodies(bodies);
   }, [blockchain, curAccount]);
 
   useEffect(() => {
@@ -44,6 +57,45 @@ export default function Supplies() {
       >
         <h1>NumBodies</h1>
         <h2>Number of Bodies: {supplies[1]}</h2>
+        <div
+          style={{
+            display: "flex",
+            // justifyContent: "space-between",
+            flexWrap: "wrap",
+            // alignItems: "center",
+            flexDirection: "row",
+            overflowX: "auto",
+            // width: "100%",
+          }}
+        >
+          {bodies.map((body) => (
+            <div
+              key={body.id}
+              style={{
+                borderRadius: "5px",
+                // flex: "1 1 0",
+                width: "60px",
+                padding: "10px",
+                margin: "10px",
+                border: "1px solid #000",
+                // Break text into multiple lines
+                wordBreak: "break-all",
+                cursor: "pointer",
+              }}
+              onClick={async () => {
+                // Show car details in pop up
+                console.log(body);
+                Swal.fire({
+                  title: "Body Details",
+                  html: `<p>Supplier: ${SUPPLIERS_NAME[parseInt(body[0])]}</p>
+                  <p>id: ${body.id}</p>`,
+                });
+              }}
+            >
+              <h2>{body.id}</h2>
+            </div>
+          ))}
+        </div>
       </div>
       <div
         style={{
@@ -56,6 +108,45 @@ export default function Supplies() {
       >
         <h1>NumWheels</h1>
         <h2>Number of Wheels: {supplies[2]}</h2>
+        <div
+          style={{
+            display: "flex",
+            // justifyContent: "space-between",
+            flexWrap: "wrap",
+            // alignItems: "center",
+            flexDirection: "row",
+            overflowX: "auto",
+            // width: "100%",
+          }}
+        >
+          {wheels.map((wheel) => (
+            <div
+              key={wheel.id}
+              style={{
+                borderRadius: "5px",
+                // flex: "1 1 0",
+                width: "60px",
+                padding: "10px",
+                margin: "10px",
+                border: "1px solid #000",
+                // Break text into multiple lines
+                wordBreak: "break-all",
+                cursor: "pointer",
+              }}
+              onClick={async () => {
+                // Show car details in pop up
+                console.log(wheel);
+                Swal.fire({
+                  title: "Wheel Details",
+                  html: `<p>Supplier: ${SUPPLIERS_NAME[parseInt(wheel[0])]}</p>
+                  <p>id: ${wheel.id}</p>`,
+                });
+              }}
+            >
+              <h2>{wheel.id}</h2>
+            </div>
+          ))}
+        </div>
       </div>
       <Button
         variant="contained"

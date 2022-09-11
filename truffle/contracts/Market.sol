@@ -447,6 +447,32 @@ contract Market {
     }
 
     /**
+    @notice Getter function for bodies for a given manufacturer
+    @param _manufacturer Manufacturer
+    @return price of a car for a given manufacturer
+     */
+    function getManufacturerBodies(MANUFACTURERS _manufacturer)
+        public
+        view
+        returns (Supply[] memory)
+    {
+        return manufacturers[_manufacturer].bodies;
+    }
+
+    /**
+    @notice Getter function for wheels for a given manufacturer
+    @param _manufacturer Manufacturer
+    @return price of a car for a given manufacturer
+     */
+    function getManufacturerWheels(MANUFACTURERS _manufacturer)
+        public
+        view
+        returns (Supply[] memory)
+    {
+        return manufacturers[_manufacturer].wheels;
+    }
+
+    /**
     @notice Buy Cars from manufacturer
     @param _manufacturer Manufacturer from which car is bought
      */

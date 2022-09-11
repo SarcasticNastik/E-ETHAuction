@@ -57,12 +57,12 @@ export default function SupplierMarket() {
           "& > :not(style)": { m: 1, width: "25ch" },
         }}
         variant="contained"
-        onClick={() => {
+        onClick={async () => {
           // Get the values from the input fields
           // Call the updateSupply function
           let qty = document.getElementById("qty").value;
           let cost = document.getElementById("cost").value;
-          blockchain.contract.methods
+          await blockchain.contract.methods
             .updateSupply(qty, cost)
             .send({ from: curAccount.account });
           setSupply([qty, cost]);

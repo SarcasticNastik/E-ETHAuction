@@ -177,7 +177,7 @@ export default function Home() {
             {parseInt(auctionStatus) === 0 && (
               <MenuItem value={0}>Not Started</MenuItem>
             )}
-            {parseInt(auctionStatus) === 0 && (
+            {parseInt(auctionStatus) <= 1 && (
               <MenuItem value={1}>Pending Bid</MenuItem>
             )}
             {parseInt(auctionStatus) <= 2 && (
