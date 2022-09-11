@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import { useCallback, useContext, useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import { MarketContext } from "../App";
 
 export default function Supplies() {
@@ -52,7 +53,20 @@ export default function Supplies() {
       <Button
         variant="contained"
         disabled={parseInt(supplies[1]) === 0 || parseInt(supplies[2]) === 0}
-        onClick={() => {
+        onClick={async () => {
+          await blockchain.contract.methods
+            .manufactureCars(1000)
+            .send({ from: blockchain.account });
+          Swal.fire({
+            title: "Success!",
+            text: "Cars manufactured successfully!",
+            icon: "success",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+          });
           init();
         }}
       >

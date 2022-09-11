@@ -332,10 +332,42 @@ export default function Home() {
           <Button
             variant="contained"
             // disabled={auctionStatus === 3}
-            onClick={() => {
-              //   alert("Auction started");
-              // blockchain.contract.methods
-              //     .startAuction()
+            onClick={async () => {
+              await blockchain.contract.methods.auction().send({
+                from: curAccount.account,
+                value:
+                  parseInt(
+                    revealedBids[MANUFACTURERS.TATA][SUPPLIERS.VEDANTA][0]
+                  ) *
+                    parseInt(
+                      revealedBids[MANUFACTURERS.TATA][SUPPLIERS.VEDANTA][1]
+                    ) +
+                  parseInt(revealedBids[MANUFACTURERS.TATA][SUPPLIERS.MRF][0]) *
+                    parseInt(
+                      revealedBids[MANUFACTURERS.TATA][SUPPLIERS.MRF][1]
+                    ) +
+                  parseInt(
+                    revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.VEDANTA][0]
+                  ) *
+                    parseInt(
+                      revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.VEDANTA][1]
+                    ) +
+                  parseInt(
+                    revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.CEAT][0]
+                  ) *
+                    parseInt(
+                      revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.CEAT][1]
+                    ),
+              });
+              Swal.fire({
+                title: "Auction Completed",
+                icon: "success",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+              });
             }}
           >
             Start Auction
