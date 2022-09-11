@@ -1,6 +1,8 @@
 # Documentation - Assignment 2
 <p style="text-align:right;"> <b> Team </b> - <b> SoBers </b> <br> Aman Kumar Kashyap <br> Aman Rojjha <br> VJS Pranavasri </p>
+
 ## Code Structure
+
 ```zsh
 .
 ├── client                                          // Frontend 
