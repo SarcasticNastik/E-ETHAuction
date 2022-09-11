@@ -434,6 +434,19 @@ contract Market {
     }
 
     /**
+    @notice Getter function for car price for a given manufacturer
+    @param _manufacturer Manufacturer
+    @return price of a car for a given manufacturer
+     */
+    function getManufacturerCars(MANUFACTURERS _manufacturer)
+        public
+        view
+        returns (Car[] memory)
+    {
+        return manufacturers[_manufacturer].cars;
+    }
+
+    /**
     @notice Buy Cars from manufacturer
     @param _manufacturer Manufacturer from which car is bought
      */

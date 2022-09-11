@@ -81,8 +81,8 @@ export default function Home() {
         .call();
       setHashedBids([
         0,
-        [0, taVe, taMr, "Not Participated"],
-        [0, maVe, "Not Participated", maCe],
+        [0, taVe, taMr, "No Participation"],
+        [0, maVe, "No Participation", maCe],
       ]);
     };
 
@@ -105,8 +105,8 @@ export default function Home() {
       maCe = parseInt(maCe[0]) === -1 ? "Not Revealed" : maCe;
       setRevealedBids([
         0,
-        [0, taVe, taMr, "Not Participated"],
-        [0, maVe, "Not Participated", maCe],
+        [0, taVe, taMr, "No Participation"],
+        [0, maVe, "No Participation", maCe],
       ]);
     };
 
@@ -120,14 +120,14 @@ export default function Home() {
 
     const [hashedBids, setHashedBids] = useState([
       0,
-      [0, "NA", "NA", "Not Participated"],
-      [0, "NA", "Not Participated", "NA"],
+      [0, "NA", "NA", "No Participation"],
+      [0, "NA", "No Participation", "NA"],
     ]);
 
     const [revealedBids, setRevealedBids] = useState([
       0,
-      [0, "Not Revealed", "Not Revealed", "Not Participated"],
-      [0, "Not Revealed", "Not Participated", "Not Revealed"],
+      [0, "Not Revealed", "Not Revealed", "No Participation"],
+      [0, "Not Revealed", "No Participation", "Not Revealed"],
     ]);
 
     return (
