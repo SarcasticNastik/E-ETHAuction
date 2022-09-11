@@ -266,16 +266,28 @@ export default function Home() {
                   <TableRow>
                     <TableCell>Vedanta</TableCell>
                     <TableCell>
-                      {revealedBids[MANUFACTURERS.TATA][SUPPLIERS.VEDANTA]}
+                      Quantity:{" "}
+                      {revealedBids[MANUFACTURERS.TATA][SUPPLIERS.VEDANTA][0]}{" "}
+                      <br />
+                      Price:{" "}
+                      {revealedBids[MANUFACTURERS.TATA][SUPPLIERS.VEDANTA][1]}
                     </TableCell>
                     <TableCell>
-                      {revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.VEDANTA]}
+                      Quantity:{" "}
+                      {revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.VEDANTA][0]}{" "}
+                      <br />
+                      Price:{" "}
+                      {revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.VEDANTA][1]}
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>MRF</TableCell>
                     <TableCell>
-                      {revealedBids[MANUFACTURERS.TATA][SUPPLIERS.MRF]}
+                      Quantity:{" "}
+                      {revealedBids[MANUFACTURERS.TATA][SUPPLIERS.MRF][0]}{" "}
+                      <br />
+                      Price:{" "}
+                      {revealedBids[MANUFACTURERS.TATA][SUPPLIERS.MRF][1]}
                     </TableCell>
                     <TableCell>
                       {revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.MRF]}
@@ -287,7 +299,13 @@ export default function Home() {
                       {revealedBids[MANUFACTURERS.TATA][SUPPLIERS.CEAT]}
                     </TableCell>
                     <TableCell>
-                      {revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.CEAT]}
+                      Quantity:{""}
+                      {
+                        revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.CEAT][0]
+                      }{" "}
+                      <br />
+                      Price:{" "}
+                      {revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.CEAT][1]}
                     </TableCell>
                   </TableRow>
                 </TableBody>
