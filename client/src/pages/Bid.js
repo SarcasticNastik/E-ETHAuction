@@ -30,16 +30,21 @@ export default function Bid() {
   const [cSupply, setCSupply] = useState(null);
   console.log(curAccount);
   return (
-    <div>
+    <div
+      style={{
+        padding: "20px",
+        boxSizing: "border-box",
+      }}
+    >
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>VEDANTA</TableCell>
+              <TableCell align="center">VEDANTA</TableCell>
               {curAccount.manufacturerNumber === MANUFACTURERS.TATA ? (
-                <TableCell>MRF</TableCell>
+                <TableCell align="center">MRF</TableCell>
               ) : (
-                <TableCell>CEAT</TableCell>
+                <TableCell align="center">CEAT</TableCell>
               )}
             </TableRow>
           </TableHead>
@@ -47,7 +52,7 @@ export default function Bid() {
             <TableRow
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
+              <TableCell align="center" component="th" scope="row">
                 {vSupply === null ? (
                   <Typography>Click to get supply</Typography>
                 ) : (
@@ -58,18 +63,23 @@ export default function Bid() {
                 )}
               </TableCell>
               {curAccount.manufacturerNumber === MANUFACTURERS.TATA ? (
-                <TableCell component="th" scope="row">
+                <TableCell align="center" component="th" scope="row">
                   {mSupply === null ? (
                     <Typography>Click to get supply</Typography>
                   ) : (
-                    <Typography variant="h6" component="div" gutterBottom>
+                    <Typography
+                      align="center"
+                      variant="h6"
+                      component="div"
+                      gutterBottom
+                    >
                       Current Supply: {mSupply[0]} <br />
                       Current Price: {mSupply[1]}
                     </Typography>
                   )}
                 </TableCell>
               ) : (
-                <TableCell component="th" scope="row">
+                <TableCell align="center" component="th" scope="row">
                   {cSupply === null ? (
                     <Typography>Click to get supply</Typography>
                   ) : (
@@ -84,7 +94,7 @@ export default function Bid() {
             <TableRow
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
+              <TableCell align="center" component="th" scope="row">
                 <Button
                   variant="contained"
                   onClick={() => {
@@ -100,7 +110,7 @@ export default function Bid() {
                 </Button>
               </TableCell>
               {curAccount.manufacturerNumber === MANUFACTURERS.TATA ? (
-                <TableCell component="th" scope="row">
+                <TableCell calign="center" omponent="th" scope="row">
                   <Button
                     variant="contained"
                     onClick={() => {
@@ -116,7 +126,7 @@ export default function Bid() {
                   </Button>
                 </TableCell>
               ) : (
-                <TableCell component="th" scope="row">
+                <TableCell align="center" component="th" scope="row">
                   <Button
                     variant="contained"
                     onClick={() => {
