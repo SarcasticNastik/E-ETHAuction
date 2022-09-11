@@ -495,7 +495,7 @@ contract Market {
     function getMyCars() public view returns (Car[] memory) {
         return customers[msg.sender];
     }
-
+    
     /**
     @notice Secret Bids by a given manufacturer for a given supply, provided the commitment
     @param supplier Supplier on whose supply the quantity and amount is bid

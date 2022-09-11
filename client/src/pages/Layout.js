@@ -6,14 +6,23 @@ import Assign from "./Assign";
 import Bid from "./Bid";
 import Home from "./Home";
 import SupplierMarket from "./SupplierMarket";
+import Supplies from "./Supplies";
 
 import { MarketContext } from "../App";
 
-const NotFound = () => {
+const NotFound = ({ curAccount }) => {
   const [redirect, setRedirect] = useState(5);
   const navigate = useNavigate();
   setTimeout(() => {
-    if (redirect === 1) navigate("/");
+    if (redirect === 1) {
+      navigate(
+        !curAccount.isOwner &&
+          !curAccount.isManufacturer &&
+          !curAccount.isSupplier
+          ? "/assign"
+          : "/"
+      );
+    }
     setRedirect(redirect - 1);
   }, 1000);
   return (
@@ -41,10 +50,13 @@ const Layout = () => {
           <Route path="/market" element={<SupplierMarket />} />
         )}
         {curAccount.isManufacturer && <Route path="/bid" element={<Bid />} />}
+        {curAccount.isManufacturer && (
+          <Route path="/supplies" element={<Supplies />} />
+        )}
         <Route path="/buycar" element={<BuyCar />} />
         {/* Default redirect */}
         {/* Add timeout */}
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFound curAccount={curAccount} />} />
       </Routes>
     </BrowserRouter>
   );
