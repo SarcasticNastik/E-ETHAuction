@@ -86,9 +86,34 @@ export default function Supplies() {
                 // Show car details in pop up
                 console.log(body);
                 Swal.fire({
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#3085d6",
+                  confirmButtonText: "Verify",
+                  cancelButtonText: "Close",
                   title: "Body Details",
                   html: `<p>Supplier: ${SUPPLIERS_NAME[parseInt(body[0])]}</p>
                   <p>id: ${body.id}</p>`,
+                }).then(async (res) => {
+                  if (res.isConfirmed) {
+                    // Verify product
+                    let result = await blockchain.contract.methods
+                      .verifySupply(body.id)
+                      .send({ from: curAccount.address });
+                    if (result) {
+                      Swal.fire({
+                        title: "Success",
+                        text: "Product verified",
+                        icon: "success",
+                      });
+                    } else {
+                      Swal.fire({
+                        title: "Error",
+                        text: "Product verification failed",
+                        icon: "error",
+                      });
+                    }
+                  }
                 });
               }}
             >
@@ -137,9 +162,34 @@ export default function Supplies() {
                 // Show car details in pop up
                 console.log(wheel);
                 Swal.fire({
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#3085d6",
+                  confirmButtonText: "Verify",
+                  cancelButtonText: "Close",
                   title: "Wheel Details",
                   html: `<p>Supplier: ${SUPPLIERS_NAME[parseInt(wheel[0])]}</p>
                   <p>id: ${wheel.id}</p>`,
+                }).then(async (res) => {
+                  if (res.isConfirmed) {
+                    // Verify product
+                    let result = await blockchain.contract.methods
+                      .verifySupply(wheel.id)
+                      .send({ from: curAccount.address });
+                    if (result) {
+                      Swal.fire({
+                        title: "Success",
+                        text: "Product verified",
+                        icon: "success",
+                      });
+                    } else {
+                      Swal.fire({
+                        title: "Error",
+                        text: "Product verification failed",
+                        icon: "error",
+                      });
+                    }
+                  }
                 });
               }}
             >

@@ -174,18 +174,10 @@ export default function Home() {
                 });
             }}
           >
-            {parseInt(auctionStatus) === 0 && (
-              <MenuItem value={0}>Not Started</MenuItem>
-            )}
-            {parseInt(auctionStatus) <= 1 && (
-              <MenuItem value={1}>Pending Bid</MenuItem>
-            )}
-            {parseInt(auctionStatus) <= 2 && (
-              <MenuItem value={2}>Pending Verification</MenuItem>
-            )}
-            {parseInt(auctionStatus) <= 3 && (
-              <MenuItem value={3}>Can Start</MenuItem>
-            )}
+            {<MenuItem value={0}>Not Started</MenuItem>}
+            {<MenuItem value={1}>Pending Bid</MenuItem>}
+            {<MenuItem value={2}>Pending Verification</MenuItem>}
+            {<MenuItem value={3}>Can Start</MenuItem>}
             <MenuItem value={4}>Auction Ended</MenuItem>
           </Select>
         </div>
