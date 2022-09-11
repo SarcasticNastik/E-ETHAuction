@@ -90,19 +90,19 @@ export default function Home() {
       let taVe = await blockchain.contract.methods
         .getBids(MANUFACTURERS.TATA, SUPPLIERS.VEDANTA)
         .call();
-      taVe = parseInt(taVe[0]) === -1 ? "Not Revealed" : taVe;
+      taVe = parseInt(taVe[0]) === -1 ? ["Not Revealed", "Not Revealed"] : taVe;
       let taMr = await blockchain.contract.methods
         .getBids(MANUFACTURERS.TATA, SUPPLIERS.MRF)
         .call();
-      taMr = parseInt(taMr[0]) === -1 ? "Not Revealed" : taMr;
+      taMr = parseInt(taMr[0]) === -1 ? ["Not Revealed", "Not Revealed"] : taMr;
       let maVe = await blockchain.contract.methods
         .getBids(MANUFACTURERS.MARUTI, SUPPLIERS.VEDANTA)
         .call();
-      maVe = parseInt(maVe[0]) === -1 ? "Not Revealed" : maVe;
+      maVe = parseInt(maVe[0]) === -1 ? ["Not Revealed", "Not Revealed"] : maVe;
       let maCe = await blockchain.contract.methods
         .getBids(MANUFACTURERS.MARUTI, SUPPLIERS.CEAT)
         .call();
-      maCe = parseInt(maCe[0]) === -1 ? "Not Revealed" : maCe;
+      maCe = parseInt(maCe[0]) === -1 ? ["Not Revealed", "Not Revealed"] : maCe;
       setRevealedBids([
         0,
         [0, taVe, taMr, "No Participation"],
@@ -118,8 +118,18 @@ export default function Home() {
 
     const [revealedBids, setRevealedBids] = useState([
       0,
-      [0, "Not Revealed", "Not Revealed", "No Participation"],
-      [0, "Not Revealed", "No Participation", "Not Revealed"],
+      [
+        0,
+        ["Not Revealed", "Not Revealed"],
+        ["Not Revealed", "Not Revealed"],
+        "No Participation",
+      ],
+      [
+        0,
+        ["Not Revealed", "Not Revealed"],
+        "No Participation",
+        ["Not Revealed", "Not Revealed"],
+      ],
     ]);
 
     return (
@@ -164,10 +174,18 @@ export default function Home() {
                 });
             }}
           >
-            <MenuItem value={0}>Not Started</MenuItem>
-            <MenuItem value={1}>Pending Bid</MenuItem>
-            <MenuItem value={2}>Pending Verification</MenuItem>
-            <MenuItem value={3}>Can Start</MenuItem>
+            {parseInt(auctionStatus) === 0 && (
+              <MenuItem value={0}>Not Started</MenuItem>
+            )}
+            {parseInt(auctionStatus) === 0 && (
+              <MenuItem value={1}>Pending Bid</MenuItem>
+            )}
+            {parseInt(auctionStatus) <= 2 && (
+              <MenuItem value={2}>Pending Verification</MenuItem>
+            )}
+            {parseInt(auctionStatus) <= 3 && (
+              <MenuItem value={3}>Can Start</MenuItem>
+            )}
             <MenuItem value={4}>Auction Ended</MenuItem>
           </Select>
         </div>
@@ -378,6 +396,8 @@ export default function Home() {
                 showConfirmButton: false,
                 timer: 3000,
                 timerProgressBar: true,
+              }).then(() => {
+                window.location.reload();
               });
             }}
           >
