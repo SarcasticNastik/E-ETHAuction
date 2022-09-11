@@ -97,6 +97,10 @@ contract Market {
     mapping(SUPPLIERS => Supplier) suppliers;
     mapping(MANUFACTURERS => Manufacturer) manufacturers;
 
+    Supply[] allSupplies;
+    Car[] allCars;
+    Car[] allSoldCars;
+
     /// @notice Mapping of manufacturers to escrow address
     mapping(uint256 => address payable) manufacturerOwners;
     mapping(address => uint256) manufacturerOwnersAddress;
@@ -330,6 +334,7 @@ contract Market {
                 generateHash(curId)
             );
             suppliers[SUPPLIERS(getSupplierNumber())].supply.push(newSupply);
+            allSupplies.push(newSupply);
         }
     }
 
@@ -358,15 +363,15 @@ contract Market {
                 uint256(--curManufacturer.numWheels)
             ];
             curManufacturer.wheels.pop();
-            curManufacturer.cars.push(
-                Car(
-                    MANUFACTURERS(getManufacturerNumber()),
-                    address(0),
-                    tempWheel,
-                    tempBody,
-                    generateHash(curId)
-                )
+            Car memory newCar = Car(
+                MANUFACTURERS(getManufacturerNumber()),
+                address(0),
+                tempWheel,
+                tempBody,
+                generateHash(curId)
             );
+            curManufacturer.cars.push(newCar);
+            allCars.push(newCar);
             curManufacturer.numCars++;
         }
     }
@@ -377,7 +382,6 @@ contract Market {
     @param _supplier Supplier
     @return Supply count and cost of the supplier
      */
-    //
     function getSupply(uint256 _supplier)
         public
         view
@@ -431,6 +435,50 @@ contract Market {
             uint256(manufacturers[_manufacturer].numCars),
             manufacturers[_manufacturer].price
         ];
+    }
+
+    /**
+    @notice function to verify uniqueness and validity of a supply
+    @param _id bytes32 id of supply
+    @return bool
+     */
+    function verifySupply(bytes32 _id) public view returns (bool) {
+        uint256 count = 0;
+        for (uint256 i = 0; i < allSupplies.length; i++) {
+            if (allSupplies[i].id == _id) {
+                count++;
+            }
+        }
+        if (count == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+    @notice function to verify uniqueness and validity of a car
+    @param _id bytes32 id of supply
+    @return bool
+     */
+    function verifyCar(bytes32 _id) public view returns (bool) {
+        uint256 count = 0;
+        for (uint256 i = 0; i < allCars.length; i++) {
+            if (allCars[i].id == _id) {
+                count++;
+            }
+        }
+
+        for (uint256 i = 0; i < allSoldCars.length; i++) {
+            if (allSoldCars[i].id == _id) {
+                count++;
+            }
+        }
+
+        if (count == 2) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -501,6 +549,7 @@ contract Market {
         manufacturers[_manufacturer].cars.pop();
         car.escrow = msg.sender;
         customers[msg.sender].push(car);
+        allSoldCars.push(car);
     }
 
     /**
@@ -544,7 +593,7 @@ contract Market {
     @param hashedBid Hashed Commitment 
      */
     function secretBid(uint256 supplier, bytes32 hashedBid) public {
-        require(auctionStatus == AUCTION_STATUS.PENDING_BID, "Bidding done");
+        require(auctionStatus == AUCTION_STATUS.PENDING_BID, "BD");
         require(
             supplier == uint256(SUPPLIERS.VEDANTA) ||
                 supplier == uint256(SUPPLIERS.MRF) ||
@@ -589,16 +638,13 @@ contract Market {
         int256 _price
     ) public payable {
         // Require that auction status is PENDING_VERIFICATION
-        require(
-            auctionStatus == AUCTION_STATUS.PENDING_VERIFICATION,
-            "Bidding not done"
-        );
+        require(auctionStatus == AUCTION_STATUS.PENDING_VERIFICATION);
         require(
             generateBidHash(SUPPLIERS(_supplier), _quantity, uint256(_price)) ==
                 hashedBids[MANUFACTURERS(getManufacturerNumber())][
                     SUPPLIERS(_supplier)
                 ],
-            "Invalid bid"
+            "IB"
         );
         require(manufacturerOwnersAddress[msg.sender] != 0);
         // Check if supplier is one of the three suppliers
@@ -663,7 +709,7 @@ contract Market {
      */
     function payThis(address payable addr, uint256 price) public payable {
         if (price > 0) {
-            require(msg.value >= price, "Not enough ether");
+            require(msg.value >= price);
             addr.transfer(price);
         }
     }
@@ -753,10 +799,7 @@ contract Market {
      */
     function auction() public payable {
         // Require that auction status is CAN_START
-        require(
-            auctionStatus == AUCTION_STATUS.CAN_START,
-            "Auction cannot be started"
-        );
+        require(auctionStatus == AUCTION_STATUS.CAN_START);
 
         require(msg.sender == escrow);
         // Check if maruti has bid
