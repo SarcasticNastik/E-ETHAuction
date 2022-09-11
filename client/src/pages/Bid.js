@@ -28,6 +28,8 @@ export default function Bid() {
   const [vSupply, setVSupply] = useState(null);
   const [mSupply, setMSupply] = useState(null);
   const [cSupply, setCSupply] = useState(null);
+  const [bidSupplier, setBidSupplier] = useState(SUPPLIERS.VEDANTA);
+
   console.log(curAccount);
   return (
     <div
@@ -166,7 +168,10 @@ export default function Bid() {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             label="Supplier"
-            defaultValue={SUPPLIERS.VEDANTA}
+            defaultValue={bidSupplier}
+            onChange={(e) => {
+              setBidSupplier(e.target.value);
+            }}
           >
             <MenuItem value={SUPPLIERS.VEDANTA}>VEDANTA</MenuItem>
             {curAccount.manufacturerNumber === MANUFACTURERS.TATA ? (
@@ -177,12 +182,12 @@ export default function Bid() {
           </Select>
         </FormControl>
         <FormControl sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel htmlFor="component-simple">Quantity</InputLabel>
-          <Input id="component-simple" />
+          <InputLabel htmlFor="bid-qty">Quantity</InputLabel>
+          <Input id="bid-qty" />
         </FormControl>
         <FormControl sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel htmlFor="component-simple">Price</InputLabel>
-          <Input id="component-simple" />
+          <InputLabel htmlFor="bid-price">Price</InputLabel>
+          <Input id="bid-price" />
         </FormControl>
         <div
           style={{
@@ -196,7 +201,28 @@ export default function Bid() {
           <Button
             variant="contained"
             style={{ marginTop: "1rem" }}
-            onClick={() => {}}
+            onClick={async () => {
+              let qty = document.getElementById("bid-qty").value;
+              let price = document.getElementById("bid-price").value;
+              // console.log(
+              //   bidSupplier,
+              //   document.getElementById("bid-qty").value,
+              //   document.getElementById("bid-price").value
+              // );
+              const hashedBid = await blockchain.contract.methods
+                .generateBidHash(bidSupplier, qty, price)
+                .call();
+              console.log(hashedBid);
+              await blockchain.contract.methods
+                .secretBid(
+                  document.getElementById("bid-qty").value,
+                  document.getElementById("bid-price").value
+                )
+                .send({ from: curAccount.address, value: qty * price + 1000 })
+                .then((res) => {
+                  console.log(res);
+                });
+            }}
           >
             Secret Bid
           </Button>

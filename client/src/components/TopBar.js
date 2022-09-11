@@ -84,7 +84,7 @@ export default function ButtonAppBar() {
             {curAccount.isManufacturer && (
               <Button
                 onClick={() => {
-                  navigate("/supply");
+                  navigate("/supplies");
                 }}
                 color="inherit"
                 sx={{ fontSize: "13px" }}
