@@ -19,11 +19,11 @@ import Swal from "sweetalert2";
 import { MarketContext } from "../App";
 import { MANUFACTURERS, SUPPLIERS } from "../constants";
 
+/**
+ * Page rendered for `Bid` 
+ * A table with two rows and 3 columns
+ */
 export default function Bid() {
-  // A table with two rows and 3 columns
-  // Each row in first column has supply data of supplier VEDANTA, MRF, CEAT respectively
-  // Each row in second column has Buttons to get the supply data and bid
-  // Headers are SUPPLIER_NAME.VEDANTA, SUPPLIER_NAME.MRF, SUPPLIER_NAME.CEAT
 
   const { blockchain, curAccount, auctionStatus } = useContext(MarketContext);
   const [vSupply, setVSupply] = useState(null);
@@ -236,13 +236,6 @@ export default function Bid() {
                     timer: 3000,
                     timerProgressBar: true,
                   });
-
-                  // .then((res) => {
-                  //   console.log(res);
-                  // })
-                  // .catch((err) => {
-                  //   console.log("Error: ", err);
-                  // });
                 }}
               >
                 Secret Bid

@@ -8,6 +8,9 @@ import {
   SUPPLIERS_NAME,
 } from "../constants";
 
+/**
+ * Component rendered for `BuyCar` 
+ */
 export default function BuyCar() {
   const { blockchain, curAccount } = useContext(MarketContext);
   const [tataCars, setTataCars] = useState(0);

@@ -2,6 +2,9 @@ import { Button, TextField, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 import { MarketContext } from "../App";
 
+/**
+ * Component for a supplier to view and update his supplies
+ */
 export default function SupplierMarket() {
   const { blockchain, curAccount } = useContext(MarketContext);
   // Add two number inputs and a update supply button

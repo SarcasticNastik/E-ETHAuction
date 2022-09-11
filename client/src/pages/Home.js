@@ -13,11 +13,19 @@ import Swal from "sweetalert2";
 import { MarketContext } from "../App";
 import { MANUFACTURERS, SUPPLIERS, AUCTION_STATUS } from "../constants";
 import { useNavigate } from "react-router-dom";
+
+
+/**
+ * Component rendered for `Home` Page 
+ */
 export default function Home() {
   const navigate = useNavigate();
   const { blockchain, curAccount, auctionStatus, setAuctionStatus } =
     useContext(MarketContext);
 
+  /**
+   * For users not yet assigned 
+   */
   const GeneralHome = () => {
     const [redirect, setRedirect] = useState(5);
     setTimeout(() => {
@@ -32,6 +40,9 @@ export default function Home() {
     );
   };
 
+  /**
+   * `Home` page for Suppliers
+   */
   const SupplierHome = () => {
     return (
       <div>
@@ -41,6 +52,9 @@ export default function Home() {
     );
   };
 
+  /**
+   * Home page for manufacturers
+   */
   const ManufacturerHome = () => {
     return (
       <div>
@@ -50,6 +64,10 @@ export default function Home() {
     );
   };
 
+  /**
+   * Home page for Owner/ Escrow
+   * This hold the logic for changing auction status and running the auction
+   */
   const OwnerHome = () => {
     useEffect(() => {
       blockchain.contract.methods
@@ -360,25 +378,25 @@ export default function Home() {
                   parseInt(
                     revealedBids[MANUFACTURERS.TATA][SUPPLIERS.VEDANTA][0]
                   ) *
-                    parseInt(
-                      revealedBids[MANUFACTURERS.TATA][SUPPLIERS.VEDANTA][1]
-                    ) +
+                  parseInt(
+                    revealedBids[MANUFACTURERS.TATA][SUPPLIERS.VEDANTA][1]
+                  ) +
                   parseInt(revealedBids[MANUFACTURERS.TATA][SUPPLIERS.MRF][0]) *
-                    parseInt(
-                      revealedBids[MANUFACTURERS.TATA][SUPPLIERS.MRF][1]
-                    ) +
+                  parseInt(
+                    revealedBids[MANUFACTURERS.TATA][SUPPLIERS.MRF][1]
+                  ) +
                   parseInt(
                     revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.VEDANTA][0]
                   ) *
-                    parseInt(
-                      revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.VEDANTA][1]
-                    ) +
+                  parseInt(
+                    revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.VEDANTA][1]
+                  ) +
                   parseInt(
                     revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.CEAT][0]
                   ) *
-                    parseInt(
-                      revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.CEAT][1]
-                    ),
+                  parseInt(
+                    revealedBids[MANUFACTURERS.MARUTI][SUPPLIERS.CEAT][1]
+                  ),
               });
               Swal.fire({
                 title: "Auction Completed",

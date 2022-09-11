@@ -11,6 +11,10 @@ import Supplies from "./Supplies";
 import { MarketContext } from "../App";
 import BuyCar from "./BuyCar";
 
+/**
+ * Component when the route isn't found
+ * @param curAccount Current Account setup by Metamask Wallet
+ */
 const NotFound = ({ curAccount }) => {
   const [redirect, setRedirect] = useState(5);
   const navigate = useNavigate();
@@ -34,6 +38,9 @@ const NotFound = ({ curAccount }) => {
   );
 };
 
+/**
+ * Logic for all the routes
+ */
 const Layout = () => {
   const { curAccount } = useContext(MarketContext);
   const assigned =

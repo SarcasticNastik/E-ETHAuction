@@ -4,14 +4,14 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { MANUFACTURERS_NAME, SUPPLIERS_NAME } from "../constants";
-// import Button from "@mui/material/Button";
-// import IconButton from "@mui/material/IconButton";
-// import MenuIcon from "@mui/icons-material/Menu";
 
 import { MarketContext } from "../App";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
+/**
+ * NavBar Component for React website
+ */
 export default function ButtonAppBar() {
   const { blockchain, curAccount } = useContext(MarketContext);
   const navigate = useNavigate();
@@ -32,10 +32,6 @@ export default function ButtonAppBar() {
           >
             MarketAuction
           </Typography>
-          {/* Add three items Home, Market, Bid*/}
-          {/* Home should navigate to / */}
-          {/* Market should navigate to /market */}
-          {/* Bid should navigate to /bid */}
           <div
             style={{
               flexGrow: 1,

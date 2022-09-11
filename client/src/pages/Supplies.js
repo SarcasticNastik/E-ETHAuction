@@ -4,6 +4,10 @@ import Swal from "sweetalert2";
 import { MarketContext } from "../App";
 import { MANUFACTURERS_NAME, SUPPLIERS_NAME } from "../constants";
 
+/**
+ * Component holding a Manufacturers' Supplies i.e. Car Bodies and Wheels
+ * Additionally allows for manufacturing the cars
+ */
 export default function Supplies() {
   const { blockchain, curAccount } = useContext(MarketContext);
   const [supplies, setSupplies] = useState([0, 0, 0]);
