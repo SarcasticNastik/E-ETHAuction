@@ -2,15 +2,22 @@ import { Button } from "@mui/material";
 import { useCallback, useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { MarketContext } from "../App";
+import { MANUFACTURERS_NAME, SUPPLIERS_NAME } from "../constants";
 
 export default function Supplies() {
-  const { blockchain } = useContext(MarketContext);
+  const { blockchain, curAccount } = useContext(MarketContext);
   const [supplies, setSupplies] = useState([0, 0, 0]);
+  const [myCars, setMyCars] = useState([]);
 
   const init = useCallback(async () => {
     let res = await blockchain.contract.methods.getManufacturerSupply().call();
     setSupplies(res);
-  }, [blockchain]);
+
+    let cars = await blockchain.contract.methods
+      .getManufacturerCars(curAccount.manufacturerNumber)
+      .call();
+    setMyCars(cars);
+  }, [blockchain, curAccount]);
 
   useEffect(() => {
     init();
@@ -85,6 +92,53 @@ export default function Supplies() {
       >
         <h1>NumCars</h1>
         <h2>Number of Cars: {supplies[0]}</h2>
+        <div
+          style={{
+            display: "flex",
+            // justifyContent: "space-between",
+            flexWrap: "wrap",
+            // alignItems: "center",
+            flexDirection: "row",
+            overflowX: "auto",
+            // width: "100%",
+          }}
+        >
+          {myCars.map((car) => (
+            <div
+              key={car.id}
+              style={{
+                borderRadius: "5px",
+                // flex: "1 1 0",
+                width: "60px",
+                padding: "10px",
+                margin: "10px",
+                border: "1px solid #000",
+                // Break text into multiple lines
+                wordBreak: "break-all",
+                cursor: "pointer",
+              }}
+              onClick={async () => {
+                // Show car details in pop up
+                console.log(car);
+                Swal.fire({
+                  title: "Car Details",
+                  html: `<p>Manufacturer: ${
+                    MANUFACTURERS_NAME[parseInt(car[0])]
+                  }</p>
+                    <p>Wheel Supplier: ${
+                      SUPPLIERS_NAME[parseInt(car[2][0])]
+                    } - ${car[2][2]}</p>
+                    <p>Body Supplier: ${
+                      SUPPLIERS_NAME[parseInt(car[3][0])]
+                    } - ${car[3][2]}</p>
+                    <p>id: ${car[4]}</p>`,
+                });
+              }}
+            >
+              <h2>{car.id}</h2>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
