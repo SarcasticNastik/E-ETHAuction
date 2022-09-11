@@ -112,7 +112,7 @@ export default function Bid() {
                 </Button>
               </TableCell>
               {curAccount.manufacturerNumber === MANUFACTURERS.TATA ? (
-                <TableCell calign="center" omponent="th" scope="row">
+                <TableCell align="center" omponent="th" scope="row">
                   <Button
                     variant="contained"
                     onClick={() => {
@@ -169,6 +169,7 @@ export default function Bid() {
             id="demo-simple-select"
             label="Supplier"
             defaultValue={bidSupplier}
+            value={bidSupplier}
             onChange={(e) => {
               setBidSupplier(e.target.value);
             }}
@@ -202,8 +203,8 @@ export default function Bid() {
             variant="contained"
             style={{ marginTop: "1rem" }}
             onClick={async () => {
-              let qty = document.getElementById("bid-qty").value;
-              let price = document.getElementById("bid-price").value;
+              let qty = parseInt(document.getElementById("bid-qty").value);
+              let price = parseInt(document.getElementById("bid-price").value);
               // console.log(
               //   bidSupplier,
               //   document.getElementById("bid-qty").value,
@@ -213,15 +214,19 @@ export default function Bid() {
                 .generateBidHash(bidSupplier, qty, price)
                 .call();
               console.log(hashedBid);
-              await blockchain.contract.methods
-                .secretBid(
-                  document.getElementById("bid-qty").value,
-                  document.getElementById("bid-price").value
-                )
-                .send({ from: curAccount.address, value: qty * price + 1000 })
-                .then((res) => {
-                  console.log(res);
+              console.log(bidSupplier);
+              let res = await blockchain.contract.methods
+                .secretBid(bidSupplier, hashedBid)
+                .send({
+                  from: curAccount.address,
                 });
+              console.log(res);
+              // .then((res) => {
+              //   console.log(res);
+              // })
+              // .catch((err) => {
+              //   console.log("Error: ", err);
+              // });
             }}
           >
             Secret Bid
@@ -229,7 +234,17 @@ export default function Bid() {
           <Button
             variant="contained"
             style={{ marginTop: "1rem", marginLeft: "10px" }}
-            onClick={() => {}}
+            onClick={async () => {
+              let qty = parseInt(document.getElementById("bid-qty").value);
+              let price = parseInt(document.getElementById("bid-price").value);
+              let res = await blockchain.contract.methods
+                .bid(bidSupplier, qty, price)
+                .send({
+                  from: curAccount.address,
+                  value: price * qty,
+                });
+              console.log(res);
+            }}
           >
             Bid
           </Button>
