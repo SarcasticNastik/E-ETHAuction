@@ -25,12 +25,12 @@ export default function Bid() {
   // Each row in second column has Buttons to get the supply data and bid
   // Headers are SUPPLIER_NAME.VEDANTA, SUPPLIER_NAME.MRF, SUPPLIER_NAME.CEAT
 
-  const { blockchain, curAccount } = useContext(MarketContext);
+  const { blockchain, curAccount, auctionStatus } = useContext(MarketContext);
   const [vSupply, setVSupply] = useState(null);
   const [mSupply, setMSupply] = useState(null);
   const [cSupply, setCSupply] = useState(null);
   const [bidSupplier, setBidSupplier] = useState(SUPPLIERS.VEDANTA);
-
+  console.log(auctionStatus);
   console.log(curAccount);
   return (
     <div
@@ -154,124 +154,142 @@ export default function Bid() {
       {/* Select has options VEDANTA, MRF, CEAT */}
       {/* Two inputs are for quantity and price */}
       {/* Button is to bid */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: "2rem",
-        }}
-      >
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel id="demo-simple-select-label">Supplier</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label="Supplier"
-            defaultValue={bidSupplier}
-            value={bidSupplier}
-            onChange={(e) => {
-              setBidSupplier(e.target.value);
-            }}
-          >
-            <MenuItem value={SUPPLIERS.VEDANTA}>VEDANTA</MenuItem>
-            {curAccount.manufacturerNumber === MANUFACTURERS.TATA ? (
-              <MenuItem value={SUPPLIERS.MRF}>MRF</MenuItem>
-            ) : (
-              <MenuItem value={SUPPLIERS.CEAT}>CEAT</MenuItem>
-            )}
-          </Select>
-        </FormControl>
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel htmlFor="bid-qty">Quantity</InputLabel>
-          <Input id="bid-qty" />
-        </FormControl>
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel htmlFor="bid-price">Price</InputLabel>
-          <Input id="bid-price" />
-        </FormControl>
+      {parseInt(auctionStatus) === 1 || parseInt(auctionStatus) === 2 ? (
         <div
           style={{
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
             marginTop: "2rem",
           }}
         >
-          <Button
-            variant="contained"
-            style={{ marginTop: "1rem" }}
-            onClick={async () => {
-              let qty = parseInt(document.getElementById("bid-qty").value);
-              let price = parseInt(document.getElementById("bid-price").value);
-              // console.log(
-              //   bidSupplier,
-              //   document.getElementById("bid-qty").value,
-              //   document.getElementById("bid-price").value
-              // );
-              const hashedBid = await blockchain.contract.methods
-                .generateBidHash(bidSupplier, qty, price)
-                .call();
-              console.log(hashedBid);
-              console.log(bidSupplier);
-              let res = await blockchain.contract.methods
-                .secretBid(bidSupplier, hashedBid)
-                .send({
-                  from: curAccount.address,
-                });
-              console.log(res);
-              Swal.fire({
-                title: "Secret Bid Placed",
-                text: "Your bid has been placed successfully",
-                icon: "success",
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-              });
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel id="demo-simple-select-label">Supplier</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Supplier"
+              defaultValue={bidSupplier}
+              value={bidSupplier}
+              onChange={(e) => {
+                setBidSupplier(e.target.value);
+              }}
+            >
+              <MenuItem value={SUPPLIERS.VEDANTA}>VEDANTA</MenuItem>
+              {curAccount.manufacturerNumber === MANUFACTURERS.TATA ? (
+                <MenuItem value={SUPPLIERS.MRF}>MRF</MenuItem>
+              ) : (
+                <MenuItem value={SUPPLIERS.CEAT}>CEAT</MenuItem>
+              )}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel htmlFor="bid-qty">Quantity</InputLabel>
+            <Input id="bid-qty" />
+          </FormControl>
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel htmlFor="bid-price">Price</InputLabel>
+            <Input id="bid-price" />
+          </FormControl>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: "2rem",
+            }}
+          >
+            {parseInt(auctionStatus) === 1 && (
+              <Button
+                variant="contained"
+                style={{ marginTop: "1rem" }}
+                onClick={async () => {
+                  let qty = parseInt(document.getElementById("bid-qty").value);
+                  let price = parseInt(
+                    document.getElementById("bid-price").value
+                  );
+                  // console.log(
+                  //   bidSupplier,
+                  //   document.getElementById("bid-qty").value,
+                  //   document.getElementById("bid-price").value
+                  // );
+                  const hashedBid = await blockchain.contract.methods
+                    .generateBidHash(bidSupplier, qty, price)
+                    .call();
+                  console.log(hashedBid);
+                  console.log(bidSupplier);
+                  let res = await blockchain.contract.methods
+                    .secretBid(bidSupplier, hashedBid)
+                    .send({
+                      from: curAccount.address,
+                    });
+                  console.log(res);
+                  Swal.fire({
+                    title: "Secret Bid Placed",
+                    text: "Your bid has been placed successfully",
+                    icon: "success",
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                  });
 
-              // .then((res) => {
-              //   console.log(res);
-              // })
-              // .catch((err) => {
-              //   console.log("Error: ", err);
-              // });
-            }}
-          >
-            Secret Bid
-          </Button>
-          <Button
-            variant="contained"
-            style={{ marginTop: "1rem", marginLeft: "10px" }}
-            onClick={async () => {
-              let qty = parseInt(document.getElementById("bid-qty").value);
-              let price = parseInt(document.getElementById("bid-price").value);
-              let res = await blockchain.contract.methods
-                .bid(bidSupplier, qty, price)
-                .send({
-                  from: curAccount.address,
-                  value: price * qty,
-                });
-              console.log(res);
-              Swal.fire({
-                title: "Bid Placed",
-                text: "Your bid has been placed successfully",
-                icon: "success",
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-              });
-            }}
-          >
-            Bid
-          </Button>
+                  // .then((res) => {
+                  //   console.log(res);
+                  // })
+                  // .catch((err) => {
+                  //   console.log("Error: ", err);
+                  // });
+                }}
+              >
+                Secret Bid
+              </Button>
+            )}
+            {parseInt(auctionStatus) === 2 && (
+              <Button
+                variant="contained"
+                style={{ marginTop: "1rem", marginLeft: "10px" }}
+                onClick={async () => {
+                  let qty = parseInt(document.getElementById("bid-qty").value);
+                  let price = parseInt(
+                    document.getElementById("bid-price").value
+                  );
+                  let res = await blockchain.contract.methods
+                    .bid(bidSupplier, qty, price)
+                    .send({
+                      from: curAccount.address,
+                      value: price * qty,
+                    });
+                  console.log(res);
+                  Swal.fire({
+                    title: "Bid Placed",
+                    text: "Your bid has been placed successfully",
+                    icon: "success",
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                  });
+                }}
+              >
+                Bid
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div
+          style={{
+            marginTop: "20px",
+          }}
+        >
+          <h1 style={{ textAlign: "center" }}>Auction Not Started Yet</h1>
+        </div>
+      )}
     </div>
   );
 }

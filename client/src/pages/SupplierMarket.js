@@ -65,6 +65,7 @@ export default function SupplierMarket() {
           blockchain.contract.methods
             .updateSupply(qty, cost)
             .send({ from: curAccount.account });
+          setSupply([qty, cost]);
         }}
       >
         Update Supply

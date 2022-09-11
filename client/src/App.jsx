@@ -21,6 +21,9 @@ function App() {
     isManufacturer: false,
     isSupplier: false,
   });
+  const [auctionStatus, setAuctionStatus] = useState(
+    localStorage.getItem("auctionStatus") || 0
+  );
 
   useEffect(() => {
     const init = async () => {
@@ -127,6 +130,8 @@ function App() {
           setBlockchain,
           curAccount,
           setCurAccount,
+          auctionStatus,
+          setAuctionStatus,
         }}
       >
         {blockchain.web3 === null ? (

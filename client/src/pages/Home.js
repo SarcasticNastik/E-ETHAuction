@@ -11,12 +11,12 @@ import {
 } from "@mui/material";
 import Swal from "sweetalert2";
 import { MarketContext } from "../App";
-import { MANUFACTURERS, SUPPLIERS } from "../constants";
+import { MANUFACTURERS, SUPPLIERS, AUCTION_STATUS } from "../constants";
 import { useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
-  const { blockchain, curAccount } = useContext(MarketContext);
-  const [auctionStatus, setAuctionStatus] = useState(0);
+  const { blockchain, curAccount, auctionStatus, setAuctionStatus } =
+    useContext(MarketContext);
 
   const GeneralHome = () => {
     const [redirect, setRedirect] = useState(5);
@@ -110,14 +110,6 @@ export default function Home() {
       ]);
     };
 
-    const AUCTION_STATUS = [
-      "Not Started",
-      "Pending Bid",
-      "Pending Verification",
-      "Can Start",
-      "Ended",
-    ];
-
     const [hashedBids, setHashedBids] = useState([
       0,
       [0, "NA", "NA", "No Participation"],
@@ -163,6 +155,7 @@ export default function Home() {
             label="Auction Status"
             onChange={(e) => {
               setAuctionStatus(e.target.value);
+              localStorage.setItem("auctionStatus", parseInt(e.target.value));
               blockchain.contract.methods
                 .changeAuctionStatus(e.target.value)
                 .send({ from: curAccount.account })
