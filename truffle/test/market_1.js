@@ -139,9 +139,9 @@ contract("Market Test 1", (accounts) => {
   // Get price of car as customer from accounts[6]
   it("should get price of car and buy it", async () => {
     let market = await Market.deployed();
-    let price = await market.getCarPrice(MANUFACTURERS.TATA, { from: accounts[6] });
+    let price = await market.getCars(MANUFACTURERS.TATA, { from: accounts[6] });
     console.log(price);
-    await market.buyCar(MANUFACTURERS.TATA, { from: accounts[6], value: price });
+    await market.buyCar(MANUFACTURERS.TATA, { from: accounts[6], value: price[1] });
   })
 
   // Check my cars

@@ -9,6 +9,7 @@ import SupplierMarket from "./SupplierMarket";
 import Supplies from "./Supplies";
 
 import { MarketContext } from "../App";
+import BuyCar from "./BuyCar";
 
 const NotFound = ({ curAccount }) => {
   const [redirect, setRedirect] = useState(5);
@@ -34,8 +35,6 @@ const NotFound = ({ curAccount }) => {
 };
 
 const Layout = () => {
-  const BuyCar = () => <h1>Page Under Construction</h1>;
-
   const { curAccount } = useContext(MarketContext);
   const assigned =
     curAccount.isOwner || curAccount.isManufacturer || curAccount.isSupplier;

@@ -36,7 +36,7 @@ export default function Supplies() {
         }}
       >
         <h1>NumBodies</h1>
-        <h2>Number of Bodies: {supplies[2]}</h2>
+        <h2>Number of Bodies: {supplies[1]}</h2>
       </div>
       <div
         style={{
@@ -48,7 +48,7 @@ export default function Supplies() {
         }}
       >
         <h1>NumWheels</h1>
-        <h2>Number of Wheels: {supplies[1]}</h2>
+        <h2>Number of Wheels: {supplies[2]}</h2>
       </div>
       <Button
         variant="contained"

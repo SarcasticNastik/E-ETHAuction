@@ -15,6 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useContext, useState } from "react";
+import Swal from "sweetalert2";
 import { MarketContext } from "../App";
 import { MANUFACTURERS, SUPPLIERS } from "../constants";
 
@@ -221,6 +222,17 @@ export default function Bid() {
                   from: curAccount.address,
                 });
               console.log(res);
+              Swal.fire({
+                title: "Secret Bid Placed",
+                text: "Your bid has been placed successfully",
+                icon: "success",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+              });
+
               // .then((res) => {
               //   console.log(res);
               // })
@@ -244,6 +256,16 @@ export default function Bid() {
                   value: price * qty,
                 });
               console.log(res);
+              Swal.fire({
+                title: "Bid Placed",
+                text: "Your bid has been placed successfully",
+                icon: "success",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+              });
             }}
           >
             Bid

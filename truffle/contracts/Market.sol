@@ -422,12 +422,15 @@ contract Market {
     @param _manufacturer Manufacturer
     @return price of a car for a given manufacturer
      */
-    function getCarPrice(MANUFACTURERS _manufacturer)
+    function getCars(MANUFACTURERS _manufacturer)
         public
         view
-        returns (uint256)
+        returns (uint256[2] memory)
     {
-        return manufacturers[_manufacturer].price;
+        return [
+            uint256(manufacturers[_manufacturer].numCars),
+            manufacturers[_manufacturer].price
+        ];
     }
 
     /**
@@ -484,7 +487,7 @@ contract Market {
     function getBids(MANUFACTURERS _manufacturer, SUPPLIERS _supplier)
         public
         view
-        returns (int[2] memory)
+        returns (int256[2] memory)
     {
         return currentBids[_manufacturer][_supplier];
     }
@@ -495,7 +498,7 @@ contract Market {
     function getMyCars() public view returns (Car[] memory) {
         return customers[msg.sender];
     }
-    
+
     /**
     @notice Secret Bids by a given manufacturer for a given supply, provided the commitment
     @param supplier Supplier on whose supply the quantity and amount is bid
@@ -885,6 +888,7 @@ contract Market {
             ];
             temp.manufacturer = MANUFACTURERS(majority);
             suppliers[SUPPLIERS.VEDANTA].supply.pop();
+            suppliers[SUPPLIERS.VEDANTA].supplyCount--;
             manufacturers[MANUFACTURERS(majority)].bodies.push(temp);
             manufacturers[MANUFACTURERS(majority)].numBodies++;
         }
@@ -895,6 +899,7 @@ contract Market {
             ];
             temp.manufacturer = MANUFACTURERS(minority);
             suppliers[SUPPLIERS.VEDANTA].supply.pop();
+            suppliers[SUPPLIERS.VEDANTA].supplyCount--;
             manufacturers[MANUFACTURERS(minority)].bodies.push(temp);
             manufacturers[MANUFACTURERS(minority)].numBodies++;
         }
@@ -905,6 +910,7 @@ contract Market {
             ];
             temp.manufacturer = MANUFACTURERS(majority);
             suppliers[SUPPLIERS(wheelS)].supply.pop();
+            suppliers[SUPPLIERS(wheelS)].supplyCount--;
             manufacturers[MANUFACTURERS(majority)].wheels.push(temp);
             manufacturers[MANUFACTURERS(majority)].numWheels++;
         }
@@ -915,6 +921,7 @@ contract Market {
             ];
             temp.manufacturer = MANUFACTURERS(minority);
             suppliers[SUPPLIERS(wheelM)].supply.pop();
+            suppliers[SUPPLIERS(wheelM)].supplyCount--;
             manufacturers[MANUFACTURERS(minority)].wheels.push(temp);
             manufacturers[MANUFACTURERS(minority)].numWheels++;
         }
@@ -995,6 +1002,12 @@ contract Market {
         currentBids[MANUFACTURERS.TATA][SUPPLIERS.MRF] = [-1, -1];
         currentBids[MANUFACTURERS.MARUTI][SUPPLIERS.VEDANTA] = [-1, -1];
         currentBids[MANUFACTURERS.MARUTI][SUPPLIERS.CEAT] = [-1, -1];
+
+        // Reset hashed bids
+        hashedBids[MANUFACTURERS.TATA][SUPPLIERS.VEDANTA] = 0x0;
+        hashedBids[MANUFACTURERS.TATA][SUPPLIERS.MRF] = 0x0;
+        hashedBids[MANUFACTURERS.MARUTI][SUPPLIERS.VEDANTA] = 0x0;
+        hashedBids[MANUFACTURERS.MARUTI][SUPPLIERS.CEAT] = 0x0;
 
         auctionStatus = AUCTION_STATUS.NOT_STARTED;
     }
