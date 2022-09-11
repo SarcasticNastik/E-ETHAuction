@@ -20,7 +20,16 @@ export default function ButtonAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar style={{ background: "#2E3B55" }} position="static">
         <Toolbar sx={{ alignItems: "center" }}>
-          <Typography variant="h4" component="div">
+          <Typography
+            style={{
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate("/");
+            }}
+            variant="h4"
+            component="div"
+          >
             MarketAuction
           </Typography>
           {/* Add three items Home, Market, Bid*/}
@@ -38,28 +47,18 @@ export default function ButtonAppBar() {
             }}
           >
             {!curAccount.isOwner &&
-            !curAccount.isManufacturer &&
-            !curAccount.isSupplier ? (
-              <Button
-                onClick={() => {
-                  navigate("/Assign");
-                }}
-                color="inherit"
-                sx={{ fontSize: "13px" }}
-              >
-                Assign
-              </Button>
-            ) : (
-              <Button
-                onClick={() => {
-                  navigate("/");
-                }}
-                color="inherit"
-                sx={{ fontSize: "13px" }}
-              >
-                Home
-              </Button>
-            )}
+              !curAccount.isManufacturer &&
+              !curAccount.isSupplier && (
+                <Button
+                  onClick={() => {
+                    navigate("/Assign");
+                  }}
+                  color="inherit"
+                  sx={{ fontSize: "13px" }}
+                >
+                  Assign
+                </Button>
+              )}
             {curAccount.isSupplier && (
               <Button
                 onClick={() => {
@@ -82,7 +81,17 @@ export default function ButtonAppBar() {
                 Bid
               </Button>
             )}
-
+            {curAccount.isManufacturer && (
+              <Button
+                onClick={() => {
+                  navigate("/supply");
+                }}
+                color="inherit"
+                sx={{ fontSize: "13px" }}
+              >
+                Supplies
+              </Button>
+            )}
             <Button
               onClick={() => {
                 navigate("/buycar");

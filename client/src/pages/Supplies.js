@@ -1,18 +1,19 @@
 import { Button } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { MarketContext } from "../App";
 
 export default function Supplies() {
-  const init = async () => {
+  const { blockchain } = useContext(MarketContext);
+  const [supplies, setSupplies] = useState([0, 0, 0]);
+
+  const init = useCallback(async () => {
     let res = await blockchain.contract.methods.getManufacturerSupply().call();
     setSupplies(res);
-  };
+  }, [blockchain]);
+
   useEffect(() => {
     init();
-  }, []);
-
-  const { blockchain, curAccount } = useContext(MarketContext);
-  const [supplies, setSupplies] = useState([0, 0, 0]);
+  }, [init]);
 
   return (
     <div
