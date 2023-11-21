@@ -1,4 +1,4 @@
-# Documentation - Assignment 2
+# E-ETH Auction
 <p style="text-align:right;"> <b> Team </b> - <b> SoBers </b> <br> Aman Kumar Kashyap <br> Aman Rojjha <br> VJS Pranavasri </p>
 
 ## Code Structure
